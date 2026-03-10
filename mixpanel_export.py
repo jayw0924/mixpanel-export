@@ -16,8 +16,8 @@ import click
 import requests
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from the script's directory
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 
 def load_credentials():
