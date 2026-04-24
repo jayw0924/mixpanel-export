@@ -176,8 +176,8 @@ def save_events(raw_jsonl, output_file):
 @click.option(
     "--output",
     type=str,
-    default="/home/jay/Data/mixpanel-export/mixpanel_export.jsonl",
-    help="Output file path (default: mixpanel_export.jsonl)"
+    default=None,
+    help="Output file path (default: auto-generated in ~/data/datasets/3d-source/mixpanel-events/)"
 )
 @click.option(
     "--event-type",
@@ -225,6 +225,14 @@ def main(from_date, to_date, days, limit, output, event_type, where):
     try:
         # Parse and validate date range
         start_date, end_date = parse_date_range(from_date, to_date, days)
+
+        if output is None:
+            base = Path.home() / "data/datasets/3d-source/mixpanel-events"
+            if start_date == end_date:
+                filename = f"mixpanel-{start_date}.jsonl"
+            else:
+                filename = f"mixpanel-{start_date}-to-{end_date}.jsonl"
+            output = str(base / filename)
 
         # Load credentials
         username, secret, project_id = load_credentials()
